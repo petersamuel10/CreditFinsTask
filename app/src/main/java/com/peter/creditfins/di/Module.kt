@@ -1,10 +1,10 @@
 package com.peter.creditfins.di
 
 import android.content.Context
-import com.peter.creditFins.base.App
-import com.peter.creditFins.data.api.ApiHelper
-import com.peter.creditFins.data.api.ApiHelperImpl
-import com.peter.creditFins.data.api.ApiService
+import com.peter.creditfins.base.App
+import com.peter.creditfins.data.api.ApiHelper
+import com.peter.creditfins.data.api.ApiHelperImpl
+import com.peter.creditfins.data.api.ApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

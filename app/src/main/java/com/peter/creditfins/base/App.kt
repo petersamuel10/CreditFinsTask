@@ -1,4 +1,4 @@
-package com.peter.creditFins.base
+package com.peter.creditfins.base
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

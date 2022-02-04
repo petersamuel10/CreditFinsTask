@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'kotlin-android-extensions'
     id 'dagger.hilt.android.plugin'
 }
 
@@ -41,6 +42,7 @@ android {
 def dagger_hilt_version = "2.33-beta"
 def dagger_lifecycle_version = "1.0.0-alpha03"
 def okHttp_version = "5.0.0-alpha.2"
+def nav_version = "2.3.5"
 
 dependencies {
 
@@ -64,6 +66,10 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2"
 
+    // nave component
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
     //retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation "com.squareup.retrofit2:converter-gson:2.9.0"
@@ -76,3 +82,38 @@ dependencies {
     implementation "androidx.hilt:hilt-lifecycle-viewmodel:$dagger_lifecycle_version"
     kapt "androidx.hilt:hilt-compiler:$dagger_lifecycle_version"
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,4 +1,4 @@
-package com.peter.creditFins.ui.intent
+package com.peter.creditfins.ui.intent
 
 sealed
 class MainIntent {

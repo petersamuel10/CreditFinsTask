@@ -1,4 +1,4 @@
-package com.peter.creditFins.base
+package com.peter.creditfins.base
 
 import androidx.appcompat.app.AppCompatActivity
 import com.peter.creditfins.util.ProgressDialog

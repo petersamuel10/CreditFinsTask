@@ -1,6 +1,6 @@
-package com.peter.creditFins.ui.viewState
+package com.peter.creditfins.ui.viewState
 
-import com.peter.creditFins.data.model.Movies
+import com.peter.creditfins.data.model.Movies
 
 sealed class MainViewState {
     object Idle : MainViewState()
