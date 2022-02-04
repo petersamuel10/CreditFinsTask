@@ -6,5 +6,6 @@ sealed class MainViewState {
     object Idle : MainViewState()
     object Loading : MainViewState()
     data class GetMovies(val movieList: List<Movie>) : MainViewState()
+    object SetFav : MainViewState()
     data class Error(val error: String?) : MainViewState()
 }

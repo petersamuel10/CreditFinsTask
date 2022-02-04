@@ -33,7 +33,8 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             mainIntent.consumeAsFlow().collect {
                 when (it) {
-                    is MainIntent.getMovies -> getMovies()
+                    is MainIntent.GetMovies -> getMovies()
+                    is MainIntent.SetFav -> setFav(it.movieId, it.fav)
                 }
             }
         }
@@ -47,6 +48,13 @@ class MainViewModel @Inject constructor(
             } catch (e: Exception) {
                 MainViewState.Error(e.localizedMessage)
             }
+        }
+    }
+
+    private fun setFav(movieId: Int, fav: Boolean) {
+
+        viewModelScope.launch {
+            repository.setFav(movieId, fav)
         }
     }
 

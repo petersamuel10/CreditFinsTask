@@ -6,9 +6,9 @@ import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.peter.creditfins.R
 import com.peter.creditfins.base.BaseActivity
-import com.peter.creditfins.data.model.MoviesResponse
 import com.peter.creditfins.data.model.Movie
 import com.peter.creditfins.ui.intent.MainIntent
+import com.peter.creditfins.ui.view.ActionType.*
 import com.peter.creditfins.ui.viewState.MainViewState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
@@ -16,14 +16,14 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity(), ClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         lifecycleScope.launch {
-            mainViewModel.mainIntent.send(MainIntent.getMovies)
+            mainViewModel.mainIntent.send(MainIntent.GetMovies)
         }
 
         recyclerView.adapter = adapter
@@ -55,10 +55,20 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    override fun movieClickListener(actionType: ActionType, movie: Movie) {
+        when (actionType) {
+            FAV -> lifecycleScope.launch {
+                mainViewModel.mainIntent.send(MainIntent.SetFav(movie.id, movie.fav))
+            }
+
+            SHOW_DETAILS -> {
+
+            }
+        }
+    }
 
     //region variable
     private val mainViewModel: MainViewModel by viewModels()
-    private var adapter = MainAdapter()
-    private lateinit var movies: MoviesResponse
-// endregion
+    private var adapter = MainAdapter(this)
+    // endregion
 }

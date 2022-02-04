@@ -8,7 +8,8 @@ import com.peter.creditfins.databinding.ItemMovieBinding
 
 typealias movies = ArrayList<Movie>
 
-class MainAdapter() : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
+class MainAdapter(private val actions: ClickListener) :
+    RecyclerView.Adapter<MainAdapter.ViewHolder>() {
 
     private var movieList: movies = arrayListOf()
 
@@ -22,6 +23,12 @@ class MainAdapter() : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         holder.binding.movie = movieList[position]
+        holder.binding.favBtn.setOnClickListener {
+            movieList[position].fav = !movieList[position].fav
+            actions.movieClickListener(ActionType.FAV, movieList[position])
+            notifyItemChanged(position)
+        }
+
     }
 
     fun addData(movieList: movies) {

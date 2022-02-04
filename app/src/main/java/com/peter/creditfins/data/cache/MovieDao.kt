@@ -18,5 +18,8 @@ interface MovieDao {
     @Query("SELECT * FROM movie")
     suspend fun getAllMovies(): List<Movie>
 
+    @Query("UPDATE movie SET fav = :fav WHERE id = :movieId")
+    suspend fun setFav(movieId: Int, fav: Boolean)
+
 
 }

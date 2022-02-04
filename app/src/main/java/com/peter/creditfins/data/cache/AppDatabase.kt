@@ -6,7 +6,7 @@ import com.peter.creditfins.data.model.Movie
 
 @Database(
     entities = [Movie::class],
-    version = 1
+    version = 2
 )
 
 abstract class AppDatabase : RoomDatabase() {

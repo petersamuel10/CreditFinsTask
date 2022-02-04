@@ -22,4 +22,8 @@ class ApiHelperImpl @Inject constructor(
             movieDao.getAllMovies()
     }
 
+    override suspend fun setFav(movieId: Int, fav: Boolean) {
+        movieDao.setFav(movieId, fav)
+    }
+
 }
