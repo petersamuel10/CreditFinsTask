@@ -1,8 +1,11 @@
 package com.peter.creditfins.ui.view
 
 import android.os.Bundle
+import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.lifecycleScope
 import com.peter.creditfins.R
 import com.peter.creditfins.base.BaseActivity
@@ -16,7 +19,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity(), ClickListener {
+class MainActivity : BaseActivity(), ClickListener, PopupMenu.OnMenuItemClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +30,7 @@ class MainActivity : BaseActivity(), ClickListener {
         }
 
         recyclerView.adapter = adapter
+        icFilter.setOnClickListener { showMenu(it) }
 
         observeViewModel()
     }
@@ -44,7 +48,8 @@ class MainActivity : BaseActivity(), ClickListener {
                     }
                     is MainViewState.GetMovies -> {
                         progressDialog.dismiss()
-                        adapter.addData(it.movieList as ArrayList<Movie>)
+                        movieList.addAll(it.movieList)
+                        adapter.setData(movieList)
                     }
                     is MainViewState.Error -> {
                         progressDialog.dismiss()
@@ -67,8 +72,32 @@ class MainActivity : BaseActivity(), ClickListener {
         }
     }
 
+    private fun showMenu(v: View) {
+        PopupMenu(this, v).apply {
+            setOnMenuItemClickListener(this@MainActivity)
+            inflate(R.menu.filter_menu)
+            show()
+        }
+    }
+
+    override fun onMenuItemClick(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.all -> {
+                adapter.setData(movieList)
+                true
+            }
+            R.id.favourite -> {
+                val favList = movieList.filter { movie -> movie.fav } as ArrayList<Movie>
+                adapter.setData(favList)
+                true
+            }
+            else -> false
+        }
+    }
+
     //region variable
     private val mainViewModel: MainViewModel by viewModels()
     private var adapter = MainAdapter(this)
+    private var movieList: ArrayList<Movie> = arrayListOf()
     // endregion
 }
