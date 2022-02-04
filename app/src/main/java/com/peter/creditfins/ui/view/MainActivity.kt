@@ -6,8 +6,8 @@ import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.peter.creditfins.R
 import com.peter.creditfins.base.BaseActivity
-import com.peter.creditfins.data.model.Movies
-import com.peter.creditfins.data.model.Result
+import com.peter.creditfins.data.model.MoviesResponse
+import com.peter.creditfins.data.model.Movie
 import com.peter.creditfins.ui.intent.MainIntent
 import com.peter.creditfins.ui.viewState.MainViewState
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,7 +44,7 @@ class MainActivity : BaseActivity() {
                     }
                     is MainViewState.GetMovies -> {
                         progressDialog.dismiss()
-                        adapter.addData(it.movies.results as ArrayList<Result>)
+                        adapter.addData(it.movieList as ArrayList<Movie>)
                     }
                     is MainViewState.Error -> {
                         progressDialog.dismiss()
@@ -59,6 +59,6 @@ class MainActivity : BaseActivity() {
     //region variable
     private val mainViewModel: MainViewModel by viewModels()
     private var adapter = MainAdapter()
-    private lateinit var movies: Movies
+    private lateinit var movies: MoviesResponse
 // endregion
 }

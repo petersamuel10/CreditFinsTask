@@ -8,5 +8,5 @@ import com.peter.creditfins.R
 @BindingAdapter("imageUrl")
 fun setImageUrl(imageView: ImageView, url: String) {
     Glide.with(imageView).load("https://image.tmdb.org/t/p/original/$url")
-        .placeholder(R.drawable.ic_search).into(imageView)
+        .placeholder(R.drawable.ic_movie).into(imageView)
 }

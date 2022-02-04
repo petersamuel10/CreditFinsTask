@@ -1,19 +1,25 @@
 package com.peter.creditfins.data.api
 
-import com.peter.creditfins.data.model.Movies
+import com.peter.creditfins.data.cache.MovieDao
+import com.peter.creditfins.data.model.Movie
+import com.peter.creditfins.util.NetworkHelper
 import javax.inject.Inject
-import javax.inject.Named
 
 class ApiHelperImpl @Inject constructor(
+    private val networkHelper: NetworkHelper,
     private val apiService: ApiService,
-    @Named("api_key")
-    private val apiKey: String
+    private val movieDao: MovieDao
 ) : ApiHelper {
 
+    override suspend fun getMovieList(): List<Movie> {
 
-    override suspend fun getMovieList(): Movies {
-
-        return apiService.getMovieList()
+        return if (networkHelper.isNetworkConnected()) {
+            val result = apiService.getMovieList()
+            if (result.total_results > 0)
+                movieDao.insertAllMovies(result.movieList)
+            result.movieList
+        } else
+            movieDao.getAllMovies()
     }
 
 }

@@ -43,6 +43,7 @@ def dagger_hilt_version = "2.33-beta"
 def dagger_lifecycle_version = "1.0.0-alpha03"
 def okHttp_version = "5.0.0-alpha.2"
 def nav_version = "2.3.5"
+def room_version = "2.3.0"
 
 dependencies {
 
@@ -75,6 +76,13 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:2.9.0"
     implementation "com.squareup.okhttp3:logging-interceptor:$okHttp_version"
     implementation 'com.github.bumptech.glide:glide:4.12.0'
+
+    /* room database */
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+    testImplementation "androidx.room:room-testing:$room_version"
+
 
     /* Dagger Hilt*/
     implementation "com.google.dagger:hilt-android:$dagger_hilt_version"

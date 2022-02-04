@@ -6,7 +6,7 @@
 
         <variable
             name="movie"
-            type="com.peter.creditfins.data.model.Result" />
+            type="com.peter.creditfins.data.model.Movie" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

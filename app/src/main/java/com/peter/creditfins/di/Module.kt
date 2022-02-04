@@ -29,10 +29,6 @@ object Module {
     @Provides
     fun provideBaseUrl() = "https://api.themoviedb.org/3/movie/"
 
-    @Named("api_key")
-    @Provides
-    fun provideAPI_KEY() = "cb9372c57f8bb6113a22276f4d92bf40"
-
 
     @Provides
     @Singleton

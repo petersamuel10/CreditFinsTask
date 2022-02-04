@@ -3,10 +3,10 @@ package com.peter.creditfins.ui.view
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.peter.creditfins.data.model.Result
+import com.peter.creditfins.data.model.Movie
 import com.peter.creditfins.databinding.ItemMovieBinding
 
-typealias movies = ArrayList<Result>
+typealias movies = ArrayList<Movie>
 
 class MainAdapter() : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
 
