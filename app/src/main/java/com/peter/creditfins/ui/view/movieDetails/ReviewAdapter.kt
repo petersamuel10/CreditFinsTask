@@ -25,7 +25,7 @@ class ReviewAdapter :
         holder.binding.review = reviewList[position]
     }
 
-    fun setData(loadMore: Boolean, movies: review) {
+    fun setData( movies: review) {
         this.reviewList.addAll(movies)
         notifyDataSetChanged()
     }

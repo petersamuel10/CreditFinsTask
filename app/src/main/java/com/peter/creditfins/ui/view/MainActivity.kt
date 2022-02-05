@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.widget.PopupMenu
@@ -29,7 +30,6 @@ class MainActivity : BaseActivity(), ClickListener, PopupMenu.OnMenuItemClickLis
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-
         lifecycleScope.launch {
             mainViewModel.mainIntent.send(MainIntent.GetMovies(page))
         }
@@ -53,6 +53,7 @@ class MainActivity : BaseActivity(), ClickListener, PopupMenu.OnMenuItemClickLis
         })
 
         observeViewModel()
+        setupAutoCompleteSearch()
     }
 
     private fun observeViewModel() {
@@ -79,6 +80,29 @@ class MainActivity : BaseActivity(), ClickListener, PopupMenu.OnMenuItemClickLis
         }
     }
 
+    private fun setupAutoCompleteSearch() {
+        val adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_list_item_1, movieListNames
+        )
+        binding.searchTxt.setAdapter(adapter)
+        binding.searchTxt.setOnItemClickListener { parent, view, position, id ->
+            val intent = Intent(this, MovieDetails::class.java)
+            intent.putExtra(
+                "movie",
+                movieList.find { movie -> movie.original_title == binding.searchTxt.text.toString() })
+            startActivity(intent)
+        }
+    }
+
+    private fun showMenu(v: View) {
+        PopupMenu(this, v).apply {
+            setOnMenuItemClickListener(this@MainActivity)
+            inflate(R.menu.filter_menu)
+            show()
+        }
+    }
+
     override fun movieClickListener(actionType: ActionType, movie: Movie) {
         when (actionType) {
             FAV -> lifecycleScope.launch {
@@ -90,14 +114,6 @@ class MainActivity : BaseActivity(), ClickListener, PopupMenu.OnMenuItemClickLis
                 intent.putExtra("movie", movie)
                 startActivity(intent)
             }
-        }
-    }
-
-    private fun showMenu(v: View) {
-        PopupMenu(this, v).apply {
-            setOnMenuItemClickListener(this@MainActivity)
-            inflate(R.menu.filter_menu)
-            show()
         }
     }
 

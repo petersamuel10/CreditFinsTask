@@ -3,9 +3,9 @@ package com.peter.creditfins.ui.view.movieDetails
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.widget.NestedScrollView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
 import com.peter.creditfins.R
 import com.peter.creditfins.base.BaseActivity
@@ -19,6 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlin.math.abs
+
 
 @AndroidEntryPoint
 class MovieDetails : BaseActivity() {
@@ -59,22 +60,19 @@ class MovieDetails : BaseActivity() {
 
         })
 
-        binding.detailBody.reviewRec.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                if (!recyclerView.canScrollVertically(1)) {
-                    loadMore = true
-                    lifecycleScope.launch {
-                        mainViewModel.mainIntent.send(
-                            MainIntent.GetReview(
-                                movie!!.id,
-                                ++reviewPage
-                            )
+        binding.nestedLy.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
+                lifecycleScope.launch {
+                    mainViewModel.mainIntent.send(
+                        MainIntent.GetReview(
+                            movie!!.id,
+                            ++reviewPage
                         )
-                    }
+                    )
                 }
             }
         })
+
         observeViewModel()
     }
 
@@ -91,7 +89,7 @@ class MovieDetails : BaseActivity() {
                     }
                     is MainViewState.GetReview -> {
                         progressDialog.dismiss()
-                        adapter.setData(loadMore, it.reviewList as ArrayList<Review>)
+                        adapter.setData(it.reviewList as ArrayList<Review>)
                     }
                     is MainViewState.Error -> {
                         progressDialog.dismiss()
@@ -107,6 +105,5 @@ class MovieDetails : BaseActivity() {
     private lateinit var binding: ActivityMovieDetailsBinding
     private var adapter = ReviewAdapter()
     private var reviewPage = 1
-    private var loadMore = false
     // endregion
 }
