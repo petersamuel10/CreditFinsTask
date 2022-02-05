@@ -1,20 +1,23 @@
 package com.peter.creditfins.ui.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.widget.PopupMenu
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.peter.creditfins.R
 import com.peter.creditfins.base.BaseActivity
 import com.peter.creditfins.data.model.Movie
+import com.peter.creditfins.databinding.ActivityMainBinding
 import com.peter.creditfins.ui.intent.MainIntent
 import com.peter.creditfins.ui.view.ActionType.*
+import com.peter.creditfins.ui.view.movieDetails.MovieDetails
 import com.peter.creditfins.ui.viewState.MainViewState
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -23,14 +26,15 @@ class MainActivity : BaseActivity(), ClickListener, PopupMenu.OnMenuItemClickLis
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
 
         lifecycleScope.launch {
             mainViewModel.mainIntent.send(MainIntent.GetMovies)
         }
 
-        recyclerView.adapter = adapter
-        icFilter.setOnClickListener { showMenu(it) }
+        binding.recyclerView.adapter = adapter
+        binding.icFilter.setOnClickListener { showMenu(it) }
 
         observeViewModel()
     }
@@ -67,7 +71,9 @@ class MainActivity : BaseActivity(), ClickListener, PopupMenu.OnMenuItemClickLis
             }
 
             SHOW_DETAILS -> {
-
+                val intent = Intent(this, MovieDetails::class.java)
+                intent.putExtra("movie", movie)
+                startActivity(intent)
             }
         }
     }
@@ -98,6 +104,7 @@ class MainActivity : BaseActivity(), ClickListener, PopupMenu.OnMenuItemClickLis
     //region variable
     private val mainViewModel: MainViewModel by viewModels()
     private var adapter = MainAdapter(this)
+    private lateinit var binding: ActivityMainBinding
     private var movieList: ArrayList<Movie> = arrayListOf()
     // endregion
 }

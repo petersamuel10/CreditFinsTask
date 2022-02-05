@@ -2,6 +2,7 @@ package com.peter.creditfins.data.api
 
 import com.peter.creditfins.data.cache.MovieDao
 import com.peter.creditfins.data.model.Movie
+import com.peter.creditfins.data.model.Review
 import com.peter.creditfins.util.NetworkHelper
 import javax.inject.Inject
 
@@ -20,6 +21,10 @@ class ApiHelperImpl @Inject constructor(
             result.movieList
         } else
             movieDao.getAllMovies()
+    }
+
+    override suspend fun getReviewList(movieId: Int): List<Review> {
+        return apiService.getReviewList(movieId).review
     }
 
     override suspend fun setFav(movieId: Int, fav: Boolean) {

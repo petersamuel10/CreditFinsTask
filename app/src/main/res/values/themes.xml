@@ -1,11 +1,16 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="Theme.CreditFins" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.CreditFins" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimaryVariant">@color/purple</item>
         <item name="colorPrimary">@color/purple</item>
         <item name="colorOnPrimary">@color/white</item>
-        <item name="colorPrimaryDark">@color/purple</item>
+        <item name="colorPrimaryDark">@color/grey_tran</item>
         <item name="android:navigationBarColor">@color/black</item>
+    </style>
+
+
+    <style name="CollapsedExpandedTitleText" parent="Theme.CreditFins">
+        <item name="android:textColor">@android:color/transparent</item>
     </style>
 </resources>

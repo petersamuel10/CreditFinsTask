@@ -1,8 +1,11 @@
 package com.peter.creditfins.data.model
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 @Entity
 data class Movie(
     @PrimaryKey
@@ -20,4 +23,4 @@ data class Movie(
     val vote_average: Double,
     val vote_count: Int,
     var fav: Boolean
-)
+):Parcelable

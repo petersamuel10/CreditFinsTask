@@ -35,7 +35,19 @@ class MainViewModel @Inject constructor(
                 when (it) {
                     is MainIntent.GetMovies -> getMovies()
                     is MainIntent.SetFav -> setFav(it.movieId, it.fav)
+                    is MainIntent.GetReview -> getReview(it.movieId)
                 }
+            }
+        }
+    }
+
+    private fun getReview(movieId: Int) {
+        viewModelScope.launch {
+            _state.value = MainViewState.Loading
+            _state.value = try {
+                MainViewState.GetReview(repository.getReviewList(movieId))
+            } catch (e: Exception) {
+                MainViewState.Error(e.localizedMessage)
             }
         }
     }

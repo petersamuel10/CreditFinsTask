@@ -23,12 +23,14 @@ class MainAdapter(private val actions: ClickListener) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         holder.binding.movie = movieList[position]
+        holder.binding.bookImgLy.setOnClickListener {
+            actions.movieClickListener(ActionType.SHOW_DETAILS, movieList[position])
+        }
         holder.binding.favBtn.setOnClickListener {
             movieList[position].fav = !movieList[position].fav
             actions.movieClickListener(ActionType.FAV, movieList[position])
             notifyItemChanged(position)
         }
-
     }
 
     fun setData(movies: movies) {
@@ -36,5 +38,4 @@ class MainAdapter(private val actions: ClickListener) :
         this.movieList.addAll(movies)
         notifyDataSetChanged()
     }
-
 }

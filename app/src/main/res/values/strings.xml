@@ -3,4 +3,6 @@
     <string name="searching">Searching</string>
     <string name="all">All</string>
     <string name="favourite">Favourite</string>
+    <string name="summary">Summary</string>
+    <string name="reviews">Reviews</string>
 </resources>

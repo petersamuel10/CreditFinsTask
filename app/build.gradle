@@ -2,8 +2,8 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'kotlin-android-extensions'
     id 'dagger.hilt.android.plugin'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -76,6 +76,7 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:2.9.0"
     implementation "com.squareup.okhttp3:logging-interceptor:$okHttp_version"
     implementation 'com.github.bumptech.glide:glide:4.12.0'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 
     /* room database */
     implementation "androidx.room:room-runtime:$room_version"
@@ -90,38 +91,3 @@ dependencies {
     implementation "androidx.hilt:hilt-lifecycle-viewmodel:$dagger_lifecycle_version"
     kapt "androidx.hilt:hilt-compiler:$dagger_lifecycle_version"
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
