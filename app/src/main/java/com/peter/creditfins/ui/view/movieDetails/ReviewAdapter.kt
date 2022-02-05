@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.peter.creditfins.data.model.Review
-import com.peter.creditfins.databinding.ItemMovieBinding
 import com.peter.creditfins.databinding.ItemReviewBinding
 
 typealias review = ArrayList<Review>
@@ -26,8 +25,7 @@ class ReviewAdapter :
         holder.binding.review = reviewList[position]
     }
 
-    fun setData(movies: review) {
-        this.reviewList.clear()
+    fun setData(loadMore: Boolean, movies: review) {
         this.reviewList.addAll(movies)
         notifyDataSetChanged()
     }

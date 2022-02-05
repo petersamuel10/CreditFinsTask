@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
 import com.peter.creditfins.R
 import com.peter.creditfins.base.BaseActivity
@@ -35,7 +36,7 @@ class MovieDetails : BaseActivity() {
         binding.detailBody.reviewRec.adapter = adapter
 
         lifecycleScope.launch {
-            mainViewModel.mainIntent.send(MainIntent.GetReview(movie!!.id))
+            mainViewModel.mainIntent.send(MainIntent.GetReview(movie!!.id, reviewPage))
         }
 
         binding.detailBody.favBtn.setOnClickListener {
@@ -57,6 +58,23 @@ class MovieDetails : BaseActivity() {
             }
 
         })
+
+        binding.detailBody.reviewRec.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (!recyclerView.canScrollVertically(1)) {
+                    loadMore = true
+                    lifecycleScope.launch {
+                        mainViewModel.mainIntent.send(
+                            MainIntent.GetReview(
+                                movie!!.id,
+                                ++reviewPage
+                            )
+                        )
+                    }
+                }
+            }
+        })
         observeViewModel()
     }
 
@@ -73,7 +91,7 @@ class MovieDetails : BaseActivity() {
                     }
                     is MainViewState.GetReview -> {
                         progressDialog.dismiss()
-                        adapter.setData(it.reviewList as ArrayList<Review>)
+                        adapter.setData(loadMore, it.reviewList as ArrayList<Review>)
                     }
                     is MainViewState.Error -> {
                         progressDialog.dismiss()
@@ -88,5 +106,7 @@ class MovieDetails : BaseActivity() {
     private val mainViewModel: MainViewModel by viewModels()
     private lateinit var binding: ActivityMovieDetailsBinding
     private var adapter = ReviewAdapter()
+    private var reviewPage = 1
+    private var loadMore = false
     // endregion
 }

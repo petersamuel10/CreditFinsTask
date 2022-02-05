@@ -9,6 +9,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.widget.PopupMenu
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
 import com.peter.creditfins.R
 import com.peter.creditfins.base.BaseActivity
 import com.peter.creditfins.data.model.Movie
@@ -30,19 +31,32 @@ class MainActivity : BaseActivity(), ClickListener, PopupMenu.OnMenuItemClickLis
 
 
         lifecycleScope.launch {
-            mainViewModel.mainIntent.send(MainIntent.GetMovies)
+            mainViewModel.mainIntent.send(MainIntent.GetMovies(page))
         }
 
         binding.recyclerView.adapter = adapter
         binding.icFilter.setOnClickListener { showMenu(it) }
 
+        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (!recyclerView.canScrollVertically(1)) {
+                    lifecycleScope.launch {
+                        mainViewModel.mainIntent.send(
+                            MainIntent.GetMovies(
+                                ++page
+                            )
+                        )
+                    }
+                }
+            }
+        })
+
         observeViewModel()
     }
 
     private fun observeViewModel() {
-
         lifecycleScope.launch {
-
             mainViewModel.state.collect {
                 when (it) {
                     is MainViewState.Idle -> {
@@ -54,6 +68,7 @@ class MainActivity : BaseActivity(), ClickListener, PopupMenu.OnMenuItemClickLis
                         progressDialog.dismiss()
                         movieList.addAll(it.movieList)
                         adapter.setData(movieList)
+                        movieList.forEach { movie -> movieListNames.add(movie.original_title) }
                     }
                     is MainViewState.Error -> {
                         progressDialog.dismiss()
@@ -106,5 +121,7 @@ class MainActivity : BaseActivity(), ClickListener, PopupMenu.OnMenuItemClickLis
     private var adapter = MainAdapter(this)
     private lateinit var binding: ActivityMainBinding
     private var movieList: ArrayList<Movie> = arrayListOf()
+    private var movieListNames: ArrayList<String> = arrayListOf()
+    private var page = 1
     // endregion
 }

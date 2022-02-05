@@ -12,10 +12,10 @@ class ApiHelperImpl @Inject constructor(
     private val movieDao: MovieDao
 ) : ApiHelper {
 
-    override suspend fun getMovieList(): List<Movie> {
+    override suspend fun getMovieList(page: Int): List<Movie> {
 
         return if (networkHelper.isNetworkConnected()) {
-            val result = apiService.getMovieList()
+            val result = apiService.getMovieList(page)
             if (result.total_results > 0)
                 movieDao.insertAllMovies(result.movieList)
             result.movieList
@@ -23,8 +23,8 @@ class ApiHelperImpl @Inject constructor(
             movieDao.getAllMovies()
     }
 
-    override suspend fun getReviewList(movieId: Int): List<Review> {
-        return apiService.getReviewList(movieId).review
+    override suspend fun getReviewList(movieId: Int, page: Int): List<Review> {
+        return apiService.getReviewList(movieId, page).review
     }
 
     override suspend fun setFav(movieId: Int, fav: Boolean) {

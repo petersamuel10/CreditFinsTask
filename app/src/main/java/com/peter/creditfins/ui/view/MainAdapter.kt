@@ -34,7 +34,6 @@ class MainAdapter(private val actions: ClickListener) :
     }
 
     fun setData(movies: movies) {
-        this.movieList.clear()
         this.movieList.addAll(movies)
         notifyDataSetChanged()
     }

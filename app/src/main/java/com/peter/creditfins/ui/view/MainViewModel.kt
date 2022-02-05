@@ -33,35 +33,36 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             mainIntent.consumeAsFlow().collect {
                 when (it) {
-                    is MainIntent.GetMovies -> getMovies()
+                    is MainIntent.GetMovies -> getMovies(it.page)
                     is MainIntent.SetFav -> setFav(it.movieId, it.fav)
-                    is MainIntent.GetReview -> getReview(it.movieId)
+                    is MainIntent.GetReview -> getReview(it.movieId, it.page)
                 }
             }
         }
     }
 
-    private fun getReview(movieId: Int) {
+    private fun getMovies(page: Int) {
         viewModelScope.launch {
             _state.value = MainViewState.Loading
             _state.value = try {
-                MainViewState.GetReview(repository.getReviewList(movieId))
+                MainViewState.GetMovies(repository.getMovieList(page))
             } catch (e: Exception) {
                 MainViewState.Error(e.localizedMessage)
             }
         }
     }
 
-    private fun getMovies() {
+    private fun getReview(movieId: Int, page:Int) {
         viewModelScope.launch {
             _state.value = MainViewState.Loading
             _state.value = try {
-                MainViewState.GetMovies(repository.getMovieList())
+                MainViewState.GetReview(repository.getReviewList(movieId, page))
             } catch (e: Exception) {
                 MainViewState.Error(e.localizedMessage)
             }
         }
     }
+
 
     private fun setFav(movieId: Int, fav: Boolean) {
 
