@@ -33,7 +33,9 @@ class MainAdapter(private val actions: ClickListener) :
         }
     }
 
-    fun setData(movies: movies) {
+    fun setData(loadMore: Boolean, movies: movies) {
+        if (!loadMore)
+            this.movieList.clear()
         this.movieList.addAll(movies)
         notifyDataSetChanged()
     }

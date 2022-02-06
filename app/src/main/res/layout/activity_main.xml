@@ -5,14 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey"
+    android:background="@color/background"
     tools:context=".ui.view.MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/searchLy"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@color/grey_tran"
         android:elevation="@dimen/_16sdp"
         android:paddingVertical="@dimen/_10sdp"
         android:paddingTop="@dimen/_1sdp"

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.peter.creditfins.data.repository.MainRepository
 import com.peter.creditfins.ui.intent.MainIntent
 import com.peter.creditfins.ui.viewState.MainViewState
+import com.peter.creditfins.util.NetworkHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val repository: MainRepository,
+    private val networkHelper: NetworkHelper
 ) : ViewModel() {
 
     val mainIntent = Channel<MainIntent>(Channel.UNLIMITED)
@@ -42,17 +44,20 @@ class MainViewModel @Inject constructor(
     }
 
     private fun getMovies(page: Int) {
-        viewModelScope.launch {
-            _state.value = MainViewState.Loading
-            _state.value = try {
-                MainViewState.GetMovies(repository.getMovieList(page))
-            } catch (e: Exception) {
-                MainViewState.Error(e.localizedMessage)
+        if (!networkHelper.isNetworkConnected() && page > 1)  // avoid load more with offline
+            return
+        else
+            viewModelScope.launch {
+                _state.value = MainViewState.Loading
+                _state.value = try {
+                    MainViewState.GetMovies(repository.getMovieList(page))
+                } catch (e: Exception) {
+                    MainViewState.Error(e.localizedMessage)
+                }
             }
-        }
     }
 
-    private fun getReview(movieId: Int, page:Int) {
+    private fun getReview(movieId: Int, page: Int) {
         viewModelScope.launch {
             _state.value = MainViewState.Loading
             _state.value = try {
@@ -62,7 +67,6 @@ class MainViewModel @Inject constructor(
             }
         }
     }
-
 
     private fun setFav(movieId: Int, fav: Boolean) {
 

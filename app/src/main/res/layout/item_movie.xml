@@ -13,7 +13,7 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_6sdp"
+        android:layout_margin="@dimen/_8sdp"
         android:orientation="vertical"
         app:cardCornerRadius="@dimen/_3sdp"
         app:cardElevation="@dimen/_2sdp"
@@ -49,9 +49,8 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="@dimen/_28sdp"
                     android:layout_height="@dimen/_28sdp"
-                    android:background="@drawable/corner_tran"
-                    app:layout_constraintBottom_toBottomOf="@+id/movieImg"
-                    app:layout_constraintEnd_toEndOf="parent">
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/movieImg">
 
                     <ImageView
                         android:id="@+id/favBtn"
@@ -78,6 +77,7 @@
             android:text="@{movie.original_title}"
             android:textAlignment="textStart"
             android:textSize="@dimen/_9ssp"
+            android:textColor="@color/white"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/bookImgLy" />
 
@@ -91,6 +91,7 @@
             android:lines="1"
             android:text="@{movie.release_date}"
             android:textSize="@dimen/_9ssp"
+            android:textColor="@color/grey_2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/movieName"
             app:layout_constraintStart_toStartOf="@+id/movieName"
@@ -103,7 +104,7 @@
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_rate"
             android:text="@{movie.vote_average+``}"
-            android:textColor="@color/purple_2"
+            android:textColor="@color/grey_2"
             android:textSize="@dimen/_9ssp"
             app:layout_constraintBottom_toBottomOf="@+id/releaseDate"
             app:layout_constraintEnd_toEndOf="@+id/movieName"

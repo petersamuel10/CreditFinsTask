@@ -22,6 +22,8 @@ import com.peter.creditfins.ui.viewState.MainViewState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.util.*
+import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity(), ClickListener, PopupMenu.OnMenuItemClickListener {
@@ -40,7 +42,8 @@ class MainActivity : BaseActivity(), ClickListener, PopupMenu.OnMenuItemClickLis
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (!recyclerView.canScrollVertically(1)) {
+                if (!recyclerView.canScrollVertically(1)&& !fav) {
+                    loadMore = true
                     lifecycleScope.launch {
                         mainViewModel.mainIntent.send(
                             MainIntent.GetMovies(
@@ -68,8 +71,9 @@ class MainActivity : BaseActivity(), ClickListener, PopupMenu.OnMenuItemClickLis
                     is MainViewState.GetMovies -> {
                         progressDialog.dismiss()
                         movieList.addAll(it.movieList)
-                        adapter.setData(movieList)
+                        adapter.setData(loadMore, movieList)
                         movieList.forEach { movie -> movieListNames.add(movie.original_title) }
+                        loadMore = false
                     }
                     is MainViewState.Error -> {
                         progressDialog.dismiss()
@@ -120,12 +124,21 @@ class MainActivity : BaseActivity(), ClickListener, PopupMenu.OnMenuItemClickLis
     override fun onMenuItemClick(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.all -> {
-                adapter.setData(movieList)
+                fav = false
+                adapter.setData(false, movieList)
                 true
             }
             R.id.favourite -> {
+                fav = true
                 val favList = movieList.filter { movie -> movie.fav } as ArrayList<Movie>
-                adapter.setData(favList)
+                adapter.setData(false, favList)
+                true
+            }
+
+            R.id.popularity -> {
+                fav = true
+                val popularityList = movieList.sortedBy { movie -> movie.popularity }
+                adapter.setData(false,  ArrayList(popularityList.reversed()) )
                 true
             }
             else -> false
@@ -139,5 +152,7 @@ class MainActivity : BaseActivity(), ClickListener, PopupMenu.OnMenuItemClickLis
     private var movieList: ArrayList<Movie> = arrayListOf()
     private var movieListNames: ArrayList<String> = arrayListOf()
     private var page = 1
+    private var loadMore = false // to avoid filtering
+    private var fav = false // to avoid load more with fav filter
     // endregion
 }
